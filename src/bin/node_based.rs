@@ -7,6 +7,8 @@ fn main() {
 
 #[cfg(test)]
 mod tests {
+    use std::process;
+
     use super::*;
 
     #[test]
@@ -14,7 +16,13 @@ mod tests {
         let node = Node::new(5);
         let mut bst_test = BST::new();
         bst_test.add(node);
-        assert_eq!(bst_test.get_root(), &5);
+
+        let root = bst_test.get_root().unwrap_or_else(|err| {
+            eprintln!("Error: {err}");
+            process::exit(1);
+        });
+
+        assert_eq!(root, &5);
     }
 
     #[test]
@@ -24,8 +32,17 @@ mod tests {
         bst_test.add(node);
         bst_test.add(Node::new(4));
 
-        assert_eq!(bst_test.get_root(), &5);
-        assert_eq!(bst_test.get_left(), &4);
+        let root = bst_test.get_root().unwrap_or_else(|err| {
+            eprintln!("Error: {err}");
+            process::exit(1);
+        });
+        let left = bst_test.get_left().unwrap_or_else(|err| {
+            eprintln!("Error: {err}");
+            process::exit(1);
+        });
+
+        assert_eq!(root, &5);
+        assert_eq!(left, &4);
     }
 
     #[test]
@@ -35,7 +52,16 @@ mod tests {
         bst_test.add(node);
         bst_test.add(Node::new(6));
 
-        assert_eq!(bst_test.get_root(), &5);
-        assert_eq!(bst_test.get_right(), &6);
+        let root = bst_test.get_root().unwrap_or_else(|err| {
+            eprintln!("Error: {err}");
+            process::exit(1);
+        });
+        let right = bst_test.get_right().unwrap_or_else(|err| {
+            eprintln!("Error: {err}");
+            process::exit(1);
+        });
+
+        assert_eq!(root, &5);
+        assert_eq!(right, &6);
     }
 }

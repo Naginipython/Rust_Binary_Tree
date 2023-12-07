@@ -1,21 +1,21 @@
 
 #[derive(Debug)]
-pub struct Node {
-    data: i32,
-    pub left: Option<Box<Node>>,
-    pub right: Option<Box<Node>>,
+pub struct Node<T: Ord> {
+    data: T,
+    pub left: Option<Box<Node<T>>>,
+    pub right: Option<Box<Node<T>>>,
 }
 
 #[allow(dead_code)]
-impl Node {
-    pub fn new(data: i32) -> Self {
+impl<T: Ord> Node<T> {
+    pub fn new(data: T) -> Self {
         Node {
             data: data,
             left: None,
             right: None,
         }
     }
-    pub fn get_data(&self) -> &i32 {
+    pub fn get_data(&self) -> &T {
         &self.data
     }
 }

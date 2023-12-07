@@ -1,24 +1,26 @@
+use std::cmp::Ord;
 use std::cmp::Ordering;
+use std::error::Error;
 
 use crate::components::node::*;
 
 #[derive(Debug)]
-pub struct BST {
-    root: Option<Node>,
+pub struct BST<T: Ord> {
+    root: Option<Node<T>>,
 }
 
 #[allow(dead_code)]
-impl BST {
+impl<T: Ord> BST<T> {
     pub fn new() -> Self {
         BST {
             root: None,
         }
     }
 
-    pub fn add(&mut self, node: Node) {
-        fn helper(
-            branch: &mut Option<Box<Node>>, 
-            node: Node
+    pub fn add(&mut self, node: Node<T>) {
+        fn helper<T: Ord>(
+            branch: &mut Option<Box<Node<T>>>, 
+            node: Node<T>
         ) {
             if let Some(branch_node) = branch {
                 match node.get_data().cmp(branch_node.get_data()) {
@@ -43,35 +45,35 @@ impl BST {
         }
     }
 
-    pub fn get_root(&self)-> &i32 {
+    pub fn get_root(&self)-> Result<&T, Box<dyn Error>> {
         if let Some(root) = &self.root {
-            root.get_data()
+            Ok(root.get_data())
         } else {
-            &-1
+            Err("Could not get root")?
         }
     }
 
-    pub fn get_left(&self) -> &i32 {
+    pub fn get_left(&self) -> Result<&T, Box<dyn Error>> {
         if let Some(root) = &self.root {
             if let Some(branch) = &root.left {
-                branch.get_data()
+                Ok(branch.get_data())
             } else {
-                &-1
+                Err("Could not get left")?
             }
         } else {
-            &-1
+            Err("Could not get root")?
         }
     }
 
-    pub fn get_right(&self) -> &i32 {
+    pub fn get_right(&self) -> Result<&T, Box<dyn Error>> {
         if let Some(root) = &self.root {
             if let Some(branch) = &root.right {
-                branch.get_data()
+                Ok(branch.get_data())
             } else {
-                &-1
+                Err("Could not get left")?
             }
         } else {
-            &-1
+            Err("Could not get root")?
         }
     }
 }
