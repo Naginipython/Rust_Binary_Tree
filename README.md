@@ -8,6 +8,7 @@ This was a personal test to see if I can create a Binary Search Tree in Rust.
 
 The final product is inside src/bin/node_based.rs. This is the primary reason I created this project, because attempting to recursively go through structs that contain values such as Box, Rc, Arc, has proven to be a small challenge for me as of late. In this project, I have BST struct, representing a Binary Search Tree. It's only field is a "root" field, where another struct, called a Node, is contained. The Node simply has an i32 data field, and a left/right. The BST goes through every node and places it appropriately.
 Update: With more inspiration from the reference, I have made the entirety of this generic. 
+Update 2: Added feature that changes the bst into an ordered vec. I will likely come back to change the implementation to remove the 'clone', and consume the bst.
 
 #### BST
 
