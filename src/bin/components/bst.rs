@@ -5,12 +5,12 @@ use std::error::Error;
 use crate::components::node::*;
 
 #[derive(Debug)]
-pub struct BST<T: Ord> {
+pub struct BST<T: Ord + Clone> {
     root: Option<Node<T>>,
 }
 
 #[allow(dead_code)]
-impl<T: Ord> BST<T> {
+impl<T: Ord + Clone> BST<T> {
     pub fn new() -> Self {
         BST {
             root: None,
@@ -18,7 +18,7 @@ impl<T: Ord> BST<T> {
     }
 
     pub fn add(&mut self, node: Node<T>) {
-        fn helper<T: Ord>(
+        fn helper<T: Ord + Clone>(
             branch: &mut Option<Box<Node<T>>>, 
             node: Node<T>
         ) {
@@ -42,6 +42,32 @@ impl<T: Ord> BST<T> {
                 },
             None => self.root = Some(node)
         }
+    }
+
+    pub fn to_vec(&self) -> Vec<T> {
+        let mut result: Vec<T> = Vec::new();
+
+        fn helper<T: Ord + Clone>(node: &Box<Node<T>>, vec: &mut Vec<T>) {
+            if let Some(branch) = &node.left {
+                helper(branch, vec);
+            }
+            vec.push(node.get_data_cloned());
+            if let Some(branch) = &node.right {
+                helper(branch, vec);
+            }
+        }
+
+        // Inital root checking
+        if let Some(root) = &self.root {
+            if let Some(branch) = &root.left {
+                helper(branch, &mut result);
+            }
+            result.push(root.get_data_cloned());
+            if let Some(branch) = &root.right {
+                helper(branch, &mut result);
+            }
+        }
+        result
     }
 
     pub fn get_root(&self)-> Result<&T, Box<dyn Error>> {
